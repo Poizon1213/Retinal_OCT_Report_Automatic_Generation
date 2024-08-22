@@ -11,6 +11,7 @@ import numpy as np
 import jieba
 from pycocoevalcap.cider.cider import Cider
 from pycocoevalcap.rouge.rouge import Rouge
+from pycocoevalcap.bleu.bleu import Bleu
 
 # Parameters
 data_name = 'coco_5_cap_per_img_5_min_word_freq'  # base name shared by data files
@@ -37,7 +38,7 @@ rev_word_map = {v: k for k, v in word_map.items()}
 vocab_size = len(word_map)
 
 # load word2id
-with open('./data/2019-all/word2idx_3_clear.json', 'r', encoding='utf-8') as j:
+with open('./data/part_data/word2idx_3_clear.json', 'r', encoding='utf-8') as j:
     id2_word = json.load(j)
 # Normalization transform
 normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -191,6 +192,27 @@ def evaluate(beam_size):
 
     # Calculate BLEU-4 scores
     bleu4 = corpus_bleu(np.expand_dims(references, axis=1), hypotheses)
+
+
+    gts = dict()
+    res = dict()
+    for i in range(len(hypotheses)):
+        gts[str(i)] = [' '.join(str(w) for w in hypotheses[i])]
+        res[str(i)] = [' '.join(str(w) for w in references[i])]
+    # Calculate Cider from pycoco
+    cide_score = Cider()
+    cider_score, cider_scores = cide_score.compute_score(res, gts)
+    print('cider_score', cider_score)
+
+    # Calculate BLEU1-4 from pycoco
+    bleu_score = Bleu()
+    bleu_scorer, bleu_scorers = bleu_score.compute_score(res, gts)
+    print('bleu_scorer', bleu_scorer)
+
+    # Calculate rouge from pycoco
+    rouge_score = Rouge()
+    rouge_scorer, rouge_scorers = rouge_score.compute_score(res, gts)
+    print('rouge_scorer', rouge_scorer)
 
     """visualize caption and preds"""
     img_captions_words = []

@@ -6,7 +6,7 @@ train_filename = './data/part_data/traindata.txt'
 val_filename = './data/part_data/valdata.txt'
 test_filename = './data/part_data/valdata.txt'
 
-image_folder =
+image_folder = r'E:\OCT_generation\wt_data\2019'
 data_folder = './data/part_data'
 max_len = 70
 batch_size = 8

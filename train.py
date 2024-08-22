@@ -14,6 +14,7 @@ from dataset import CaptionDataset
 from model import Encoder, DecoderWithAttention, Decoder
 from utils import *
 from config import *
+from models.DenseMultiFusionV2_V3 import *
 import warnings
 from sklearn import metrics
 # import sklearn.metrics.ranking
@@ -43,7 +44,7 @@ def main():
 
         decoder_optimizer = torch.optim.Adam(params=filter(lambda p: p.requires_grad, decoder.parameters()),
                                              lr=decoder_lr)
-        encoder = Encoder()
+        encoder = DenseMultiFusionV2_V3()
         encoder_optimizer = torch.optim.Adam(params=filter(lambda p: p.requires_grad, encoder.parameters()),
                                              lr=encoder_lr) if fine_tune_encoder else None
 

@@ -34,13 +34,13 @@ class CaptionDataset(Dataset):
 
         if split == 'train':
             with open(train_filename, 'r', encoding='utf-8') as f:
-                self.check_files = f.readlines()[:1]
+                self.check_files = f.readlines()[:]
         elif split == 'valid':
             with open(val_filename, 'r', encoding='utf-8') as f:
-                self.check_files = f.readlines()[:1]
+                self.check_files = f.readlines()[:]
         elif split == 'test':
             with open(test_filename, 'r', encoding='utf-8') as f:
-                self.check_files = f.readlines()[:1]
+                self.check_files = f.readlines()[:]
         with open(os.path.join(data_folder, 'WORDMAP_3_clear.json'), 'r', encoding='utf-8') as f:
             self.word_map = json.load(f)
 
